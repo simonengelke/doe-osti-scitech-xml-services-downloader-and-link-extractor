@@ -1,11 +1,11 @@
 """
 DESCRIPTION:
-XML downloader for SciTech Connect XML Servcies. 
+XML downloader for SciTech Connect XML Services. 
 Downloads metadata XML for all found search results, 
 taking in account multiple pages with search results.
 
 INSTRUCTIONS:
-Find the search qurery which equals the follwing <link> by following this manual: 
+Find the search qurery which equals the following <link> by following this manual: 
 http://www.osti.gov/home/sites/www.osti.gov.home/files/SciTechXMLDataServices.pdf
 
 USAGE:
