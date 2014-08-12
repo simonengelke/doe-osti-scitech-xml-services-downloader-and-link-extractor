@@ -34,4 +34,5 @@ VERSION:
 1.0
 
 More details in the individual Python files.
-"""
+
+This code was developed as part of [Google Summer of Code 2014](https://www.google-melange.com/gsoc/project/details/google/gsoc2014/sengelke/5668600916475904)
