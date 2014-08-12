@@ -30,7 +30,7 @@ python download_xmls_services.py --identifier_links batter
 
 ## Author
 
-Simon Engelke (engelke.co)
+Simon Engelke ([engelke.co](http://engelke.co))
 
 ## License
 
