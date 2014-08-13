@@ -23,6 +23,7 @@ metadata files with option --txt+xml
 ## Usage
 
 Locate file in Terminal and type:
+
 1. python download_xmls_services.py --download <link> <ResultFolder>
 2. python download_xmls_services.py {--identifier_links|--identifiers|--links} <XMLFolder>
 3. python download_osti_files.py {--txt|txt+xml} <file> <folder>
