@@ -43,7 +43,10 @@ def file_opener(filename):
 
 def extract_identifiers(folder):
   """Extracts osti identifiers out of XMLs and saves links."""
-  os.chdir(os.path.join(os.getcwd(), folder))
+  os.chdir(os.path.join(os.getcwd(), folder)) # change directory to folder directory
+
+  print '=============' + ' Extract Links OSTI XML ' + '============'
+
   for filename_xml in sorted(glob.glob("*.xml")):
     textstring = file_opener(filename_xml)
     identifier_tuple = re.findall(r'<dc:ostiId>(\d+)</dc:ostiId>',textstring,re.DOTALL)
@@ -52,11 +55,15 @@ def extract_identifiers(folder):
       sys.exit(1)
     for identifier in identifier_tuple:
       save_file(folder, filename_xml, identifier, 'identifiers')
-    print 'Processed file: ' + filename_xml
+    print 'Extracted links from: ' + filename_xml
+  os.chdir(os.pardir) #back to parent directory
 
 def extract_identifier_links(folder):
   """Extracts osti identifiers out of XMLs and saves links."""
-  os.chdir(os.path.join(os.getcwd(), folder))
+  os.chdir(os.path.join(os.getcwd(), folder, 'xml_services')) # change directory to folder directory
+
+  print '=============' + ' Extract Links OSTI XML ' + '============'
+
   for filename_xml in glob.glob("*.xml"):
     textstring = file_opener(filename_xml)
     identifier_tuple = re.findall(r'<dc:ostiId>(\d+)</dc:ostiId>',textstring,re.DOTALL)
@@ -66,13 +73,19 @@ def extract_identifier_links(folder):
 
     # Create links
     for identifier in identifier_tuple:
+      #print identifier
       identifier_link = 'http://www.osti.gov/scitech/servlets/purl/' + identifier
-      save_file(folder, filename_xml, identifier_link, 'identifier_links')
-    print 'Processed file: ' + filename_xml
+      #print identifier_link
+      save_file('identifier_links', filename_xml, identifier_link, 'identifier_links')
+    print 'Extracted links from: ' + filename_xml
+  os.chdir(os.pardir) #back to parent directory
 
 def extract_links(folder):
   """Imports an Unicode file and extracts Links."""
-  os.chdir(os.path.join(os.getcwd(), folder))
+  os.chdir(os.path.join(os.getcwd(), folder)) # change directory to folder directory
+
+  print '=============' + ' Extract Links OSTI XML ' + '============'
+
   for filename_xml in glob.glob("*.xml"):
     textstring = file_opener(filename_xml)
     links_tuple = re.findall(r'\>(http://www.osti.gov/scitech/servlets/purl/\d+)\<',textstring,re.DOTALL)
@@ -80,19 +93,21 @@ def extract_links(folder):
       sys.stderr.write('Couldn\'t find the links!\n')
       sys.exit(1)
     for link in links_tuple:
-      save_file(folder, filename_xml, link, 'links')
-    print 'Processed file: ' + filename_xml
+      save_file(os.path.join(os.pardir, folder), filename_xml, link, 'links')
+    print 'Extracted links from: ' + filename_xml
+  os.chdir(os.pardir) #back to parent directory
+
 
 def save_file(folder, filename, extract, type_extract):
   """Adds the extracted links line by line to a text file"""
-  dir_path = os.path.join(type_extract)
-  if not os.path.exists(type_extract):
-      os.makedirs(type_extract)
+  path_type_extract = os.path.join(os.pardir, type_extract)
+  if not os.path.exists(path_type_extract):
+    os.makedirs(path_type_extract)
   filename_extract = filename[:-4] + '_' + type_extract + '.txt'
-  with open(os.path.join(dir_path, filename_extract), "ab") as extract_file:
+  with open(os.path.join(os.pardir, type_extract, filename_extract), "ab") as extract_file:
     extract_file.write(extract + "\n")
   filename_extract_all = type_extract + '_all.txt'
-  with open(os.path.join(dir_path, filename_extract_all), "ab") as extract_file:
+  with open(os.path.join(os.pardir, type_extract, filename_extract_all), "ab") as extract_file:
     extract_file.write(extract + "\n")
 
 def main():
@@ -101,13 +116,13 @@ def main():
     sys.exit(1)
 
   option = sys.argv[1]
-  filename = sys.argv[2]
+  folder = sys.argv[2]
   if option == '--links':
-    print extract_links(filename)
+    extract_links(folder)
   elif option == '--identifiers':
-    print extract_identifiers(filename)
+    extract_identifiers(folder)
   elif option == '--identifier_links':
-    print extract_identifier_links(filename)
+    extract_identifier_links(folder)
   else:
     print 'unknown option: ' + option
     sys.exit(1)

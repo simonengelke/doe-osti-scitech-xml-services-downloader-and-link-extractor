@@ -31,10 +31,13 @@ VERSION:
 
 import requests, codecs, re, sys, cookielib, os, time
 
-def download(links, folder, filetype):
+def download(links_identifiers, folder, filetype):
   """This function can be used to download plain text and XML metadata files from SciTech Connect by OSTI."""
-  # Presets
-  with open(links, 'r') as f:
+  # Open text file with links or identifiers
+
+  with open(links_identifiers, 'r') as f:
+
+    # Presets
     osti_txt_file = ''
     downloads = 0
     not_downloaded = 0
@@ -45,6 +48,8 @@ def download(links, folder, filetype):
     path_errors = os.path.join(os.getcwd(), folder, 'errors')
     if not os.path.exists(path_errors):
       os.makedirs(path_errors)
+    print '=============' + ' Download OSTI files ' + '==============='
+    print '| ' + '#' + ' | ' + 'identifier          date and time' + ' |'
 
     # Determine if links or identifiers in file
     first_line = f.readline()
@@ -144,6 +149,9 @@ def download(links, folder, filetype):
 
       # Take a break for the servers
       #time.sleep(1)
+
+  log('log', '\n' + 'Total downloads: ' + str(downloads), '', '', '')
+  log('log', 'Total not downloads: ' + str(not_downloaded), '', '', '')
   print 'Total downloads: ' + str(downloads)
   print 'Total not downloads: ' + str(not_downloaded)
 
@@ -153,10 +161,6 @@ def log(log_name, comments, osti, log_encoding, path_folder):
     now = time.strftime("%c")
     file.write(str(osti) + ' | ' + str(log_encoding) + ' | ' + str(now) + ' | ' + comments + '\n')
 
-def download_xml_metadata_from_links(filename, folder):
-  print 'Have to add here'
-
-  
 def main():
   if len(sys.argv) != 4:
     print 'usage: python download_osti_files.py {--txt|txt+xml} <file> <folder>'

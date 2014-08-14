@@ -32,14 +32,16 @@ def download_xmls_services(search_link, folder):
   """this function will download XMLs from SciTech Connect XML services"""
   
   # Define folder to store files in
-  path_folder = os.path.join(os.getcwd(), folder)
-  print 'Store files in: ' + str(path_folder)
+  path_folder = os.path.join(os.getcwd(), folder, 'xml_services')
   if not os.path.exists(path_folder):
     os.makedirs(path_folder)
 
   # Presets
   more_pages = True
-  index = 26
+  index = 0
+
+  # Title
+  print '=============' + ' Download XML Services ' + '============='
 
   # Loop while there are more pages which can be dowloaded
   while more_pages == True:
@@ -67,12 +69,11 @@ def download_xmls_services(search_link, folder):
       file.write(log + '\n')
   
     # Print and add index
-    print 'Downloaded: ' + str(index) + '.xml'
+    print '| ' + str(index) + ' | ' + str(now) + ' | '
     index = index + 1
 
     # Add some break time for the server
-    seconds = 2
-    print 'Sleep: ' + str(seconds) + 's'
+    seconds = 1
     time.sleep(seconds)
 
 def main():
